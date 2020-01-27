@@ -9,163 +9,124 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 class ipapi {
 
-      private $CI;
-
-      private $ip;
-      private $currency;
-      private $isp;
-      private $org;
-      private $country;
-      private $regionCode;
-      private $regionName;
-      private $countryCode;
-      private $city;
-      private $zip;
-      private $lat;
-      private $lon;
-      private $timezone;
-      private $reverse;
-      private $mobile;
-      private $query;
-      private $asname;
-      private $proxy;
-      private $hosting;
-      private $continent;
-      private $continentCode;
-
+    private $CI;
     public function __construct()
     {
-
-        $this->CI = $CI =& get_instance();
-        $this->CI->load->library('user_agent'); 
-
-
-        @$this->ip               =     $CI->input->ip_address();
-        @$this->isp              =     $this->ipdecode()->isp;
-        @$this->org              =     $this->ipdecode()->org;
-        @$this->country          =     $this->ipdecode()->country;
-        @$this->regionCode       =     $this->ipdecode()->region;
-        @$this->regionName       =     $this->ipdecode()->regionName;
-        @$this->countryCode      =     $this->ipdecode()->countryCode;
-        @$this->city             =     $this->ipdecode()->city;
-        @$this->zip              =     $this->ipdecode()->zip;
-        @$this->lat              =     $this->ipdecode()->lat;
-        @$this->lon              =     $this->ipdecode()->lon;
-        @$this->timezone         =     $this->ipdecode()->timezone;
-        @$this->mobile           =     $this->ipdecode()->mobile;
-        @$this->query            =     $this->ipdecode()->query;
-        @$this->asname           =     $this->ipdecode()->asname;
-        @$this->proxy            =     $this->ipdecode()->proxy;
-        @$this->continent        =     $this->ipdecode()->continent;
-        @$this->continentCode    =     $this->ipdecode()->continentCode;
-        @$this->currency         =     $this->ipdecode()->currency;
-
+      $this->CI =& get_instance();
+      $this->CI->load->library('user_agent'); 
     }
 
     public function alldetails()
     {
-        return !empty($this->ipdecode) ? $this->ipdecode : null; 
+        return !empty($this->ipdecode()) ? $this->ipdecode() : null; 
     }
 
     public function ip()
     {
-        return !empty($this->ip) ? $this->ip : null; 
+        return !empty($this->CI->input->ip_address()) ? $this->CI->input->ip_address() : null; 
     }
 
     public function isp()
     {
-        return !empty($this->isp) ? $this->isp : null; 
+        return !empty($this->ipdecode()->isp) ? $this->ipdecode()->isp : null; 
     }
 
     public function org()
     {
-        return !empty($this->org) ? $this->org : null; 
+        return !empty($this->ipdecode()->org) ? $this->ipdecode()->org : null; 
+    }
+
+    public function currency()
+    {
+        return !empty($this->ipdecode()->currency) ? $this->ipdecode()->currency : null; 
     }
 
     public function country()
     {
-        return !empty($this->country) ? $this->country : null; 
+        return !empty($this->ipdecode()->country) ? $this->ipdecode()->country : null; 
     }
 
     public function regionCode()
     {
-        return !empty($this->regionCode) ? $this->regionCode : null; 
+        return !empty($this->ipdecode()->region) ? $this->ipdecode()->region : null; 
     }
 
     public function regionName()
     {
-        return !empty($this->regionName) ? $this->regionName : null; 
+        return !empty($this->ipdecode()->regionName) ? @$this->ipdecode()->regionName : null; 
     }
 
     public function countryCode()
     {
-        return !empty($this->countryCode) ? $this->countryCode : null; 
+        return !empty($this->ipdecode()->countryCode) ? $this->ipdecode()->countryCode : null; 
     }
 
     public function city()
     {
-        return !empty($this->city) ? $this->city : null; 
+        return !empty($this->ipdecode()->city) ? $this->ipdecode()->city : null; 
     }
 
     public function zip()
     {
-        return !empty($this->zip) ? $this->zip : null; 
+        return !empty($this->ipdecode()->zip) ? $this->ipdecode()->zip : null; 
     }
 
     public function lat()
     {
-        return !empty($this->lat) ? $this->lat : null; 
+        return !empty($this->ipdecode()->lat) ? $this->ipdecode()->lat : null; 
     }
 
     public function lon()
     {
-        return !empty($this->lon) ? $this->lon : null; 
+        return !empty($this->ipdecode()->lon) ? $this->ipdecode()->lon : null; 
     }
 
     public function timezone()
     {
-        return !empty($this->timezone) ? $this->timezone : null; 
+        return !empty($this->ipdecode()->timezone) ? $this->ipdecode()->timezone : null; 
     }
 
     public function mobile()
     {
-        return !empty($this->mobile) ? $this->mobile : null; 
+        return !empty($this->ipdecode()->mobile) ? $this->ipdecode()->mobile : null; 
     }
 
     public function query()
     {
-        return !empty($this->query) ? $this->query : null; 
+        return !empty($this->ipdecode()->query) ? $this->ipdecode()->query : null; 
     }
 
     public function asname()
     {
-        return !empty($this->asname) ? $this->asname : null; 
+        return !empty($this->ipdecode()->asname) ? $this->ipdecode()->asname : null; 
     }
 
     public function proxy()
     {
-        return !empty($this->proxy) ? $this->proxy : null; 
+        return !empty($this->ipdecode()->proxy) ? $this->ipdecode()->proxy : null; 
     }
 
     public function continent()
     {
-        return !empty($this->continent) ? $this->continent : null; 
+        return !empty($this->ipdecode()->continent) ? $this->ipdecode()->continent : null; 
     }
 
     public function continentCode()
     {
-        return !empty($this->continentCode) ? $this->continentCode : null; 
+        return !empty($this->ipdecode()->continentCode) ? $this->ipdecode()->continentCode : null; 
     }
 
-
-
+    public function hosting()
+    {
+        return !empty($this->ipdecode()->hosting) ? $this->ipdecode()->hosting : null; 
+    }
 
 
 
     private function ipdecode()
     {
-      if($this->ip == "::1") $this->curl = $this->curl('http://ip-api.com/json/?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'); else $this->curl = $this->curl('http://ip-api.com/json/'.$this->ip.'?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query');
-      return json_decode($this->curl);
+     if($this->ip() == "::1") $this->curl =$this->curl('http://ip-api.com/json/?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'); else $this->curl = $this->curl('http://ip-api.com/json/'.$this->ip().'?fields=status,message,continent,continentCode,country,countryCode,region,regionName,city,zip,lat,lon,timezone,currency,isp,org,as,asname,reverse,mobile,proxy,hosting,query'); return json_decode($this->curl);
+     return json_decode($this->ipdecode()->curl);
     }
 
     private function curl($url)
@@ -181,4 +142,5 @@ class ipapi {
     }
 
 }
+
 ?> 
